@@ -1,5 +1,4 @@
-import Streamlit as st
-import pandas as pd
+import streamlit as st
 
 st.title("Streamlit Example")
 st.text("This is a simple Streamlit application.")
