@@ -28,6 +28,15 @@ if 'consumed' not in st.session_state:
 if 'food_log' not in st.session_state:
     st.session_state.food_log = []
 
+if 'last_logged_date' not in st.session_state:
+    st.session_state.last_logged_date = datetime.date.today()
+
+current_date = datetime.date.today()
+if st.session_state.last_logged_date < current_date:
+    st.session_state.consumed = {'cal': 0, 'p': 0, 'c': 0, 'f': 0}
+    st.session_state.food_log = []
+    st.session_state.last_logged_date = current_date
+
 st.set_page_config(page_title="TrackCross", page_icon="🏋️", layout="wide")
 
 def dashboard_page():
@@ -173,7 +182,7 @@ def food_log_page():
                 st.error("Please enter a food item to search.")
 
     with tab2:
-        st.subheader("AI Macro Scanner")
+        st.subheader("AI Vision Macro Scanner")
         upload_col, camera_col = st.columns(2)
         
         with upload_col:
@@ -183,7 +192,7 @@ def food_log_page():
             
         if st.button("Analyze Image"):
             if uploaded_file is not None or camera_image is not None:
-                with st.spinner("Processing image with AI Scanner..."):
+                with st.spinner("Processing image with AI Vision..."):
                     time.sleep(2) 
                     detected_food = random.choice(["Oatmeal with Berries", "Cheeseburger", "Salmon and Rice", "Avocado Toast"])
                     macros = mock_macro_analysis(detected_food, 150) 
