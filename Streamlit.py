@@ -61,23 +61,28 @@ def dashboard_page():
         st.subheader("Quick Add Macros")
         with st.popover("➕ Add Custom Meal"):
             meal_name = st.text_input("Meal Name")
-            add_cal = st.number_input("Calories", min_value=0, step=50)
-            add_p = st.number_input("Protein (g)", min_value=0, step=5)
-            add_c = st.number_input("Carbs (g)", min_value=0, step=5)
-            add_f = st.number_input("Fats (g)", min_value=0, step=5)
+            add_cal = st.number_input("Calories", min_value=0, step=50, value=None)
+            add_p = st.number_input("Protein (g)", min_value=0, step=5, value=None)
+            add_c = st.number_input("Carbs (g)", min_value=0, step=5, value=None)
+            add_f = st.number_input("Fats (g)", min_value=0, step=5, value=None)
             
             if st.button("Log Custom Meal"):
-                st.session_state.consumed['cal'] += add_cal
-                st.session_state.consumed['p'] += add_p
-                st.session_state.consumed['c'] += add_c
-                st.session_state.consumed['f'] += add_f
+                c_cal = add_cal or 0
+                c_p = add_p or 0
+                c_c = add_c or 0
+                c_f = add_f or 0
+
+                st.session_state.consumed['cal'] += c_cal
+                st.session_state.consumed['p'] += c_p
+                st.session_state.consumed['c'] += c_c
+                st.session_state.consumed['f'] += c_f
                 st.session_state.food_log.append({
                     "Time": datetime.datetime.now().strftime("%H:%M"), 
                     "Food": meal_name, 
-                    "Cals": add_cal,
-                    "Protein (g)": add_p,
-                    "Carbs (g)": add_c,
-                    "Fats (g)": add_f
+                    "Cals": c_cal,
+                    "Protein (g)": c_p,
+                    "Carbs (g)": c_c,
+                    "Fats (g)": c_f
                 })
                 st.toast(f"Logged {meal_name} successfully!", icon="✅")
                 st.rerun()
@@ -168,7 +173,7 @@ def food_log_page():
                 st.error("Please enter a food item to search.")
 
     with tab2:
-        st.subheader("AI Vision Macro Scanner")
+        st.subheader("AI Macro Scanner")
         upload_col, camera_col = st.columns(2)
         
         with upload_col:
@@ -178,7 +183,7 @@ def food_log_page():
             
         if st.button("Analyze Image"):
             if uploaded_file is not None or camera_image is not None:
-                with st.spinner("Processing image with AI Vision..."):
+                with st.spinner("Processing image with AI Scanner..."):
                     time.sleep(2) 
                     detected_food = random.choice(["Oatmeal with Berries", "Cheeseburger", "Salmon and Rice", "Avocado Toast"])
                     macros = mock_macro_analysis(detected_food, 150) 
