@@ -71,7 +71,14 @@ def dashboard_page():
                 st.session_state.consumed['p'] += add_p
                 st.session_state.consumed['c'] += add_c
                 st.session_state.consumed['f'] += add_f
-                st.session_state.food_log.append({"Time": datetime.datetime.now().strftime("%H:%M"), "Food": meal_name, "Cals": add_cal})
+                st.session_state.food_log.append({
+                    "Time": datetime.datetime.now().strftime("%H:%M"), 
+                    "Food": meal_name, 
+                    "Cals": add_cal,
+                    "Protein (g)": add_p,
+                    "Carbs (g)": add_c,
+                    "Fats (g)": add_f
+                })
                 st.toast(f"Logged {meal_name} successfully!", icon="✅")
                 st.rerun()
                 
@@ -140,7 +147,14 @@ def food_log_page():
                     st.session_state.consumed['p'] += macros['p']
                     st.session_state.consumed['c'] += macros['c']
                     st.session_state.consumed['f'] += macros['f']
-                    st.session_state.food_log.append({"Time": datetime.datetime.now().strftime("%H:%M"), "Food": f"{search_query} ({grams_input}g)", "Cals": macros['cal']})
+                    st.session_state.food_log.append({
+                        "Time": datetime.datetime.now().strftime("%H:%M"), 
+                        "Food": f"{search_query} ({grams_input}g)", 
+                        "Cals": macros['cal'],
+                        "Protein (g)": macros['p'],
+                        "Carbs (g)": macros['c'],
+                        "Fats (g)": macros['f']
+                    })
                     
                     st.success(f"Found it! Added {grams_input}g of {search_query} to your daily log.")
                     c1, c2, c3, c4 = st.columns(4)
@@ -171,7 +185,14 @@ def food_log_page():
                     st.session_state.consumed['p'] += macros['p']
                     st.session_state.consumed['c'] += macros['c']
                     st.session_state.consumed['f'] += macros['f']
-                    st.session_state.food_log.append({"Time": datetime.datetime.now().strftime("%H:%M"), "Food": detected_food + " (Scanned)", "Cals": macros['cal']})
+                    st.session_state.food_log.append({
+                        "Time": datetime.datetime.now().strftime("%H:%M"), 
+                        "Food": detected_food + " (Scanned)", 
+                        "Cals": macros['cal'],
+                        "Protein (g)": macros['p'],
+                        "Carbs (g)": macros['c'],
+                        "Fats (g)": macros['f']
+                    })
                     
                     st.success(f"AI Detected: **{detected_food}**! Macros automatically added to your dashboard.")
                     c1, c2, c3, c4 = st.columns(4)
