@@ -87,7 +87,9 @@ def dashboard_page():
             if not st.session_state.food_log:
                 st.write("No food logged yet today.")
             else:
-                st.dataframe(pd.DataFrame(st.session_state.food_log), use_container_width=True)
+                df_log = pd.DataFrame(st.session_state.food_log)
+                df_log.index = df_log.index + 1
+                st.dataframe(df_log, use_container_width=True)
 
 def mock_macro_analysis(food_name, grams):
     db = {
